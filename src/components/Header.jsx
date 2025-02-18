@@ -1,4 +1,6 @@
 export default function Header(){
-    return(<><h1>LISTA DI ARTICOLI</h1>
+    return(<><header>
+        <h1>LISTA DI ARTICOLI</h1>
+        </header>
     </>)
 }

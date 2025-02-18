@@ -9,8 +9,8 @@ const articles = [
     "Introduzione a Node.js per principianti",
     "10 consigli per ottimizzare le prestazioni del tuo sito web",
 ];
-  
-  
+
+
 
 export default function Main() {
     // articles Contiene l'array di articoli.------ setArticles È una funzione che permette di aggiornare lo stato. ---- useState() Gestisce lo stato
@@ -25,41 +25,57 @@ export default function Main() {
 
     // 2) Per gestire piu input lo facciamo con il Form quindi come seconda parte aggiungo il form con onSubmit reagisce al click di un button o anche dell invio della tastiera e in qeusto esempio lo vediamo sulla console ---- Poi ho aggiungo anche il button Invia 
     const handleSubmit = event => {
-        
+
         // no fa ricaricare la pagina all invio 
         event.preventDefault();
 
         // Facciamo la copia dell array di stringhe 
-        const copiaLista= [...listTitle, newlistTitle];
+        const copiaLista = [...listTitle, newlistTitle];
         // e aggiorno anche lo stato
         setListTitle(copiaLista)
 
+
+        // Resetta il campo input
+        newSetListTitle("");
+
         // Test per vedere se stampa qualsiasi cosa nell campo form
-        console.log('Il nome inviato è:' + copiaLista)
+        console.log('Il nome inviato è:' + newlistTitle)
     }
 
-    
+
     // 3) Ho fatto  un array di stringhe dove lo vado a mettere nel <ul> facendo il map --- Poi aggiungo il button elimina a li
 
     // 4) Abbiamo questo array di stringhe ma vogliamo che al click del button INVIA aggiunge una altra lista compilata dal input
     // -Per farlo bisogna creare uno useState vuoto dove all interno andranno gli elementi che aggiunge l utente
-    
+
+
+
+    // 5) BONUS RIMUOVI ELEMENTI sul button ---- AGGIUNGIAMO onclick al button, Poi creiamo una funzione che gestira la rimozione della lista al click=== infine aggiungo onClick al button
+    const removeList = li => {
+        const updatedList = listTitle.filter((list, i) => {
+            return i !== li;
+        });
+        setListTitle(updatedList);
+    };
+
     return (<>
         {/* PARTE GESTIONE DEL FORM */}
+        <main>
+            <form onSubmit={handleSubmit}>
+                <input type="text" value={newlistTitle} placeholder="Inserisci il titolo"
+                    onChange={e => { newSetListTitle(e.target.value) }}
+                />
+                <button>INVIA</button>
+            </form>
 
-        <form onSubmit={handleSubmit}>
-            <input type="text"
-                onChange={e => { newSetListTitle(e.target.value) }}
-            />
-            <button>INVIA</button>
-        </form>
-        
-        {/* PARTE GESTIONE DELLA LISTA  */}
-        <ul>
-            {listTitle.map((list, i) => <li key={i}>{list}
-            <button>-</button>
-            </li>)}
-            
-        </ul>
+            {/* PARTE GESTIONE DELLA LISTA  */}
+            <ul>
+                {listTitle.map((list, i) => <li key={i}>{list}
+                    <button className="remove" onClick={() => removeList(i)}>-</button>
+                </li>)}
+
+            </ul>
+        </main>
+
     </>)
 }
